@@ -34,3 +34,24 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
 });
 
 export const User = mongoose.model<IUser>("User", userSchema);
+
+export interface IAccount extends Document {
+  userId : IUser["_id"];
+  amount: number;
+}
+
+const accountSchema: Schema<IAccount> = new mongoose.Schema({
+  userId : {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: 0,
+  },
+});
+
+export const Account = mongoose.model<IAccount>("Account", accountSchema);
