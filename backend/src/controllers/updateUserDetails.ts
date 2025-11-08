@@ -9,10 +9,10 @@ interface UpdateParams {
 }
 
 export const updateUserDetails = async (req: Request, res: Response) => {
-    const id = (req as any).decode;
+    const _id = (req as any)._id;
     const updateParams: UpdateParams = req.body;
 
-    const response = await User.findByIdAndUpdate({id: id},updateParams);
+    const response = await User.findByIdAndUpdate({_id: _id},updateParams);
     if(!response){
         return res.status(HTTPStatusCode.BAD_REQUEST).json({
             message: "Updated successfully"

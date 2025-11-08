@@ -18,7 +18,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
             })
         }
         const decode = jwt.verify(token,JWT_SECRET);
-        (req as any)["id"] = decode;
+        (req as any)["_id"] = decode;
     }catch(err){
         return res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({
             message: "Something went wrong"

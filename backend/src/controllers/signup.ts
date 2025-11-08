@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { HTTPStatusCode } from "../statusCodes.js";
 import type { signupType } from "../validation/validationSchema.js";
-import { User } from "../db.js";
+import { Account, User } from "../db.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 
@@ -33,7 +33,12 @@ export const signup = async (req: Request, res: Response) => {
             password: hashedPassword
         })
 
-        const token = jwt.sign(newUser.id,JWT_SECRET,{expiresIn:"1h"});
+        const newAccount = await Account.create({
+            userId: newUser._id,
+            balance: 1 + Math.random()*10000
+        })
+
+        const token = jwt.sign(newUser._id!,JWT_SECRET,{expiresIn:"1h"});
 
         return res.status(HTTPStatusCode.CREATED).json({
             message: "User signed up successfully",

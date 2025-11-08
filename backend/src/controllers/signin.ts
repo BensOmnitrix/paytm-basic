@@ -20,7 +20,7 @@ export const signin = async (req: Request, res: Response) => {
             })
         }
 
-        const token = jwt.sign(existingUser.id,JWT_SECRET,{expiresIn:"1h"});
+        const token = jwt.sign(existingUser._id!,JWT_SECRET,{expiresIn:"1h"});
 
         return res.status(HTTPStatusCode.CREATED).json({
             message: "User login successfull",

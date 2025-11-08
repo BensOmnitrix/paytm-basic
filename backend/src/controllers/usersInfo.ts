@@ -3,7 +3,7 @@ import { User } from "../db.js";
 import { HTTPStatusCode } from "../statusCodes.js";
 
 export const usersInfo = async (req: Request, res: Response) => {
-    const id = (req as any).decode;
+    const _id = (req as any)._id;
     const filter = req.params.filter as string || "";
 
     if(!filter){
