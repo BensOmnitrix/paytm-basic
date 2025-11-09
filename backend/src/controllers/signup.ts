@@ -1,12 +1,13 @@
+import dotenv from "dotenv"
+dotenv.config();
 import type { Request, Response } from "express";
 import { HTTPStatusCode } from "../statusCodes.js";
 import type { signupType } from "../validation/validationSchema.js";
 import { Account, User } from "../db.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
-
-const JWT_SECRET = process.env.JWT_SECRET!;
-const SALT_ROUNDS = process.env.SALT_ROUNDS!;
+import { JWT_SECRET } from "../index.js";
+import { SALT_ROUNDS } from "../index.js";
 
 export const signup = async (req: Request, res: Response) => {
     try{
@@ -15,15 +16,15 @@ export const signup = async (req: Request, res: Response) => {
         const firstName = parsedInputs.firstName;
         const lastName = parsedInputs.lastName;
         const password = parsedInputs.password;
-
-        const response = await User.findOne({email});
+        
+        const response = await User.findOne({email: email});
 
         if(response){
             return res.status(HTTPStatusCode.FORBIDDEN).json({
                 message: "User already exists"
             })
         }
-
+        
         const hashedPassword = await bcrypt.hash(password,SALT_ROUNDS);
 
         const newUser = await User.create({
@@ -35,19 +36,25 @@ export const signup = async (req: Request, res: Response) => {
 
         const newAccount = await Account.create({
             userId: newUser._id,
-            balance: 1 + Math.random()*10000
+            amount: 1 + Math.random()*1000000
         })
 
-        const token = jwt.sign(newUser._id!,JWT_SECRET,{expiresIn:"1h"});
-
+        if(!newAccount){
+            return res.status(HTTPStatusCode.BAD_REQUEST).json({
+                message: "Account cannot be created"
+            })
+        }
+        
+        const token = jwt.sign({id: newUser._id},JWT_SECRET,{expiresIn:"1h"});
+        
         return res.status(HTTPStatusCode.CREATED).json({
             message: "User signed up successfully",
             token : token
         })
 
-    }catch(errs){
+    }catch(err){
         return res.status(HTTPStatusCode.BAD_REQUEST).json({
-            message: "Something went wrong"
+            message: (err as any).message
         })
     }
 }

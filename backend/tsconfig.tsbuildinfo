@@ -1,1 +1,1 @@
-{"root":["./src/db.ts","./src/index.ts"],"version":"5.9.3"}
+{"root":["./src/db.ts","./src/index.ts","./src/statuscodes.ts","./src/controllers/balance.ts","./src/controllers/signin.ts","./src/controllers/signup.ts","./src/controllers/transfermoney.ts","./src/controllers/updateuserdetails.ts","./src/controllers/usersinfo.ts","./src/middlewares/auth.ts","./src/middlewares/validation.ts","./src/routes/account.ts","./src/routes/index.ts","./src/routes/user.ts","./src/validation/validationschema.ts"],"version":"5.9.3"}

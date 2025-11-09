@@ -1,14 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUser extends Document {
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-}
-
-const userSchema: Schema<IUser> = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -33,14 +25,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   }
 });
 
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model("User", userSchema);
 
-export interface IAccount extends Document {
-  userId : IUser["_id"];
-  amount: number;
-}
-
-const accountSchema: Schema<IAccount> = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
   userId : {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -54,4 +41,4 @@ const accountSchema: Schema<IAccount> = new mongoose.Schema({
   },
 });
 
-export const Account = mongoose.model<IAccount>("Account", accountSchema);
+export const Account = mongoose.model("Account", accountSchema);

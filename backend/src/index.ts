@@ -5,8 +5,10 @@ import cors from "cors";
 import express from "express";
 import { mainRouter } from "./routes/index.js";
 const app = express();
-const DATABASE_URL = process.env.DATABASE_URL!;
-const PORT = process.env.PORT;
+export const DATABASE_URL = process.env.DATABASE_URL!;
+export const PORT = process.env.PORT;
+export const JWT_SECRET = process.env.JWT_SECRET!;
+export const SALT_ROUNDS = Number(process.env.SALT_ROUNDS!);
 
 mongoose.connect(DATABASE_URL)
 

@@ -17,12 +17,12 @@ export const signupValidation = (req: Request,res: Response,next: NextFunction) 
             message: "Internal Server error"
         })
     }
-
+    
 }
 
 export const signinValidation = (req: Request,res: Response,next: NextFunction) => {
     try{
-        const signinParams: signinType = req.body();
+        const signinParams: signinType = req.body;
         const parsedInputs = signinSchema.safeParse(signinParams);
         if(!parsedInputs.success){
             return res.status(HTTPStatusCode.BAD_REQUEST).json({

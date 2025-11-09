@@ -5,8 +5,6 @@ import { transferMoney } from "../controllers/transferMoney.js";
 
 export const accountRouter = express.Router();
 
-accountRouter.use(authMiddleware);
+accountRouter.get("/balance",authMiddleware, balanceDetails);
 
-accountRouter.get("/balance", balanceDetails);
-
-accountRouter.post("transfer", transferMoney);
+accountRouter.post("/transfer",authMiddleware, transferMoney);

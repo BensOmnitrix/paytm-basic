@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { HTTPStatusCode } from "../statusCodes.js";
 import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET!;
+import { JWT_SECRET } from "../index.js";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     try{
@@ -18,7 +18,8 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
             })
         }
         const decode = jwt.verify(token,JWT_SECRET);
-        (req as any)["_id"] = decode;
+        (req as any)["_id"] = (decode as any).id;
+        next();
     }catch(err){
         return res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({
             message: "Something went wrong"

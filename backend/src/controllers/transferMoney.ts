@@ -23,7 +23,7 @@ export const transferMoney = async (req: Request,res: Response) => {
                 message: "Insufficient Balance"
             })
         }
-        const toAccount = await Account.findById({_id: to}).session(session);
+        const toAccount = await Account.findOne({userId: to}).session(session);
         if(!toAccount){
             await session.abortTransaction();
             return res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({
@@ -41,7 +41,7 @@ export const transferMoney = async (req: Request,res: Response) => {
     }catch(err){
         await session.abortTransaction();
         return res.status(HTTPStatusCode.CONFLICT).json({
-            message: "Something Went Wrong"
+            message: (err as any).message
         })
     }finally{
         session.endSession();
